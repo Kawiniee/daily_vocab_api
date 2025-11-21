@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, Text, DECIMAL, TIMESTAMP, Enum as SQLEnum
-from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP
+from sqlalchemy.sql import func
 from app.database import Base
-
 
 class Word(Base):
     __tablename__ = "words"
@@ -9,20 +8,17 @@ class Word(Base):
     id = Column(Integer, primary_key=True, index=True)
     word = Column(String(100), unique=True, nullable=False)
     definition = Column(Text)
-    difficulty_level = Column(
-        SQLEnum('Beginner', 'Intermediate', 'Advanced', name='difficulty'),
-        default='Beginner'
-    )
-    created_at = Column(TIMESTAMP, default=datetime.utcnow)
+    difficulty_level = Column(Integer, default=1)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
+class PracticeSubmission(Base):
+    __tablename__ = "practice_submissions"
 
-class PracticeSession(Base):
-    __tablename__ = "practice_sessions"
-    
     id = Column(Integer, primary_key=True, index=True)
-    word_id = Column(Integer, nullable=False)
-    user_sentence = Column(Text, nullable=False)
-    score = Column(DECIMAL(3, 1))
+    user_id = Column(Integer, nullable=False)
+    word_id = Column(Integer, ForeignKey("words.id"), nullable=False)
+    submitted_sentence = Column(Text, nullable=False)
+    score = Column(Integer, nullable=False)
     feedback = Column(Text)
     corrected_sentence = Column(Text)
-    practiced_at = Column(TIMESTAMP, default=datetime.utcnow)
+    timestamp = Column(TIMESTAMP(timezone=True), server_default=func.now())

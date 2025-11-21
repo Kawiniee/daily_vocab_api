@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from datetime import datetime
 from typing import List
-
+from pydantic import BaseModel
+from typing import Optional
 
 class WordResponse(BaseModel):
     id: int
@@ -12,18 +13,20 @@ class WordResponse(BaseModel):
     class Config:
         from_attributes = True
 
-
 class ValidateSentenceRequest(BaseModel):
     word_id: int
+    word: str
+    difficulty_level: int
     sentence: str
 
-
 class ValidateSentenceResponse(BaseModel):
-    score: float
-    level: str
-    suggestion: str
-    corrected_sentence: str
-
+    word_id: int
+    sentence: str
+    score: int
+    level: int
+    suggestion: Optional[str] = None
+    corrected_sentence: Optional[str] = None
+    record_id: int
 
 class SummaryResponse(BaseModel):
     total_practices: int

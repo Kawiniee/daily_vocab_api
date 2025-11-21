@@ -14,9 +14,14 @@ Base = declarative_base()
 
 
 def get_db():
-    """Dependency for database sessions"""
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+
+def init_db():
+    """สร้าง table ถ้ายังไม่มี"""
+    from app.models import Word, PracticeSubmission
+    Base.metadata.create_all(bind=engine)

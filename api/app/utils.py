@@ -1,6 +1,5 @@
 import random
 
-
 def mock_ai_validation(sentence: str, target_word: str, difficulty: str) -> dict:
     """
     Mock AI validation - simulates scoring and feedback
@@ -17,7 +16,7 @@ def mock_ai_validation(sentence: str, target_word: str, difficulty: str) -> dict
     
     if not has_word:
         return {
-            "score": 0.0,
+            "score": 0,  # ✅ int
             "level": difficulty,
             "suggestion": f"Your sentence must include the word '{target_word}'. Please try again!",
             "corrected_sentence": f"Remember to use '{target_word}' in your sentence."
@@ -38,8 +37,9 @@ def mock_ai_validation(sentence: str, target_word: str, difficulty: str) -> dict
     if difficulty == 'Advanced' and word_count > 8:
         score = min(10.0, score + 0.5)
     
+    # ✅ แปลง score เป็น int ก่อน return
     return {
-        "score": round(score, 1),
+        "score": int(round(score)),
         "level": difficulty,
         "suggestion": suggestion,
         "corrected_sentence": sentence  # In production, AI would correct this
