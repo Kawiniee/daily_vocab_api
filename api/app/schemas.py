@@ -1,15 +1,13 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
-from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Dict
 
 class WordResponse(BaseModel):
     id: int
     word: str
     definition: str
-    difficulty_level: str
-    
+    difficulty_level: int   # <-- เปลี่ยนเป็น int
+
     class Config:
         from_attributes = True
 
@@ -33,7 +31,6 @@ class SummaryResponse(BaseModel):
     average_score: float
     total_words_practiced: int
     level_distribution: dict
-
 
 class HistoryItem(BaseModel):
     id: int
